@@ -11,34 +11,21 @@ var svg = d3.select("#chart-area").append("svg")
 
 
 /* Adding circles using a data join */
-var data = [25, 20, 10 ,12, 15];
-var circles = svg.selectAll("circle")
-  .data(data);
 
-circles.enter()
- .append("circle")
-	.attr("cx", (d,i)=>{ return i*50 +25 })
-	.attr("cy", 25)
-	.attr("r", (d)=>{return d})
-	.attr("fill", "blue");
+/* data can be read from an external file */
+d3.csv("data/ages.csv").then( (data)=>{
+  data.forEach((d)=>{d.age = +d.age;}) /* This converts data stored as string to numerical */
 
+  var circles = svg.selectAll("circle")
+    .data(data);
 
-
-
-var rect = svg.append("rect")
-  .attr("x", 100)
-  .attr("y", 100)
-  .attr("width", 300)
-  .attr("height", 150)
-  .attr("fill", "red");
-
-
-var line = svg.append("line")
-  .attr("x1", 100)
-  .attr("y1", 160)
-  .attr("x2", 450)
-  .attr("y2", 320)
-  .attr("stroke","gray");
+  circles.enter()
+   .append("circle")
+    .attr("cx", (d,i)=>{ return i*50 +25 })
+    .attr("cy", 25)
+    .attr("r", (d)=>{return d.age})
+    .attr("fill", "blue");
+}).catch((error)=>{console.log(error)})
 
 
 
