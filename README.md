@@ -70,3 +70,14 @@ In d3 we use the function `scaleOrdinal` for creating an ordinal scale. Useful w
 
 ### Band Scale
 The function `scaleBand` is almost exclusively used for spacing different categories in a bar chart, in order to avoid that bars span the x-axis. We define inner and outer paddings using the methods `paddingInner` and `paddingOuter` after the `range` method. We can get the computed bandwidth using the method `bandwidth` of the scale object, without passing arguments.
+
+### Useful functions
+What if we want to automatically set domains?
+D3 provides three useful functions that help with that. They take an array of data and a callback functions as arguments. The callback function must return the piece of data we are interested to be compared by the function over all items in the array:
+
+* `min`: Returns the minimum value in the array;
+* `max`: Returns the maximum value in the array;
+* `extent`: Returns an array with the minimum (index 0) and the maximum (index 1) values in the array.
+
+With these functions we no longer need to have scales hard-coded, nor we need to know the minimum and maximum values before making the visualization.
+

@@ -37,13 +37,13 @@ d3.json("data/buildings.json").then((data)=>{
   /* Configuring the scale */
 
   var x = d3.scaleBand()
-    .domain(["Burj Khalifa", "Shanghai Tower", "Abraj Al-Bait Clock Tower", "Ping An Finance Centre", "Lotte World Tower"]) // All categories
+    .domain(data.map((d)=>{return d.name;})) // Mapping all categories from the dataset automatically
     .range([0,500]) // The canvas width is 500
     .paddingInner(0.3)
     .paddingOuter(0.3);
 
   var y = d3.scaleLinear()
-    .domain([0,828])
+    .domain([0,d3.max(data,(d)=>{return d.height})])
     .range([0,400]);
 
   var rects = svg.selectAll("rect")
