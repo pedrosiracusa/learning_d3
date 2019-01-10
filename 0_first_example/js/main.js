@@ -1,3 +1,5 @@
+
+
 /* Appending a svg tag where id is 'chart-area' */
 var svg = d3.select("#chart-area").append("svg")
 	.attr("width", 500)
@@ -5,16 +7,27 @@ var svg = d3.select("#chart-area").append("svg")
 
 
 /* Adding objects */
-var circle = svg.append("circle")
-	.attr("cx", 100)
-	.attr("cy", 250)
-	.attr("r", 70)
+
+
+
+/* Adding circles using a data join */
+var data = [25, 20, 10 ,12, 15];
+var circles = svg.selectAll("circle")
+  .data(data);
+
+circles.enter()
+ .append("circle")
+	.attr("cx", (d,i)=>{ return i*50 +25 })
+	.attr("cy", 25)
+	.attr("r", (d)=>{return d})
 	.attr("fill", "blue");
 
 
+
+
 var rect = svg.append("rect")
-  .attr("x", 0)
-  .attr("y", 0)
+  .attr("x", 100)
+  .attr("y", 100)
   .attr("width", 300)
   .attr("height", 150)
   .attr("fill", "red");

@@ -26,3 +26,9 @@ Takes one argument: The type of the element we want to add to the screen.
 Sets the value of an attribute of an element.
 Takes two arguments: The attribute, and the value to be set.
 
+
+D3 Data Join
+------------
+D3 reads an array of data and associates it with SVG elements.
+It relies on a method called `enter()`, which is called after a svg is selected and attached to some data (using the `data()` method).
+To set attributes of svgs based on data, we can use the method `attr()`, passing a function as the second argument: The function expects two arguments `(d,i)`, where `d` is an element in the data array and `i` its index. The second argument (`i`) does not have to be passed necessarily.
