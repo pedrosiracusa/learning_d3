@@ -35,6 +35,13 @@ d3.json("data/buildings.json").then((data)=>{
 
 
   /* Configuring the scale */
+
+  var x = d3.scaleBand()
+    .domain(["Burj Khalifa", "Shanghai Tower", "Abraj Al-Bait Clock Tower", "Ping An Finance Centre", "Lotte World Tower"]) // All categories
+    .range([0,500]) // The canvas width is 500
+    .paddingInner(0.3)
+    .paddingOuter(0.3);
+
   var y = d3.scaleLinear()
     .domain([0,828])
     .range([0,400]);
@@ -43,9 +50,9 @@ d3.json("data/buildings.json").then((data)=>{
     .data(data)
     .enter()
     .append("rect")
-      .attr("x", (d,i)=>{return i*40})
+      .attr("x", (d,i)=>{return x(d.name)})
       .attr("y", 50)
-      .attr("width", 30)
+      .attr("width", x.bandwidth())
       .attr("height", (d)=>{return y(d.height)})
       .attr("fill","gray");
 }).catch((error)=>{console.log(error)})
