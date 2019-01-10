@@ -81,3 +81,9 @@ D3 provides three useful functions that help with that. They take an array of da
 
 With these functions we no longer need to have scales hard-coded, nor we need to know the minimum and maximum values before making the visualization.
 
+Groups
+------
+Groups are containers for structuring and grouping SVG graphical elements together. 
+They are represented with the tag `g`, and allow us to apply **transformations** (e.g. translation) to multiple elements which are laid inside it.
+Groups form the base for implementing the **D3 Margin convention**.
+

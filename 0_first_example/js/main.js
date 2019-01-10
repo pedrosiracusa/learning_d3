@@ -1,34 +1,25 @@
 
+/* Setting margins, width and height of the plot */
+
+var margin = { left:100, right:10, top:10, bottom:100 };
+var width = 600 - margin.left - margin.right;
+var height = 400 - margin.top - margin.bottom;
+
 
 /* Appending a svg tag where id is 'chart-area' */
 var svg = d3.select("#chart-area").append("svg")
-	.attr("width", 500)
-	.attr("height", 400);
+	.attr("width", width + margin.left + margin.right)
+	.attr("height", height + margin.top + margin.bottom);
+
+
+/* Adding a group */
+var g = svg.append("g")
+  .attr("transform", "translate(" + margin.left + ", " + margin.top + ")")
 
 
 /* Adding objects */
 
-
-
-/* Adding circles using a data join */
-
 /* data can be read from an external file */
-d3.csv("data/ages.csv").then( (data)=>{
-  data.forEach((d)=>{d.age = +d.age;}) /* This converts data stored as string to numerical */
-
-  var circles = svg.selectAll("circle")
-    .data(data);
-
-  circles.enter()
-   .append("circle")
-    .attr("cx", (d,i)=>{ return i*50 +25 })
-    .attr("cy", 25)
-    .attr("r", (d)=>{return d.age})
-    .attr("fill", "blue");
-}).catch((error)=>{console.log(error)})
-
-
-
 /* Adding a bar chart from buildings data */
 d3.json("data/buildings.json").then((data)=>{
   data.forEach((d)=>{d.height = +d.height;});
@@ -38,15 +29,15 @@ d3.json("data/buildings.json").then((data)=>{
 
   var x = d3.scaleBand()
     .domain(data.map((d)=>{return d.name;})) // Mapping all categories from the dataset automatically
-    .range([0,500]) // The canvas width is 500
+    .range([0,width]) // The canvas width is 500
     .paddingInner(0.3)
     .paddingOuter(0.3);
 
   var y = d3.scaleLinear()
     .domain([0,d3.max(data,(d)=>{return d.height})])
-    .range([0,400]);
+    .range([0,height]);
 
-  var rects = svg.selectAll("rect")
+  var rects = g.selectAll("rect")
     .data(data)
     .enter()
     .append("rect")
