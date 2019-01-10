@@ -33,15 +33,20 @@ d3.csv("data/ages.csv").then( (data)=>{
 d3.json("data/buildings.json").then((data)=>{
   data.forEach((d)=>{d.height = +d.height;});
 
-  var rects = svg.selectAll("rect")
-    .data(data);
 
-  rects.enter()
+  /* Configuring the scale */
+  var y = d3.scaleLinear()
+    .domain([0,828])
+    .range([0,400]);
+
+  var rects = svg.selectAll("rect")
+    .data(data)
+    .enter()
     .append("rect")
       .attr("x", (d,i)=>{return i*40})
       .attr("y", 50)
       .attr("width", 30)
-      .attr("height", (d)=>{return d.height})
+      .attr("height", (d)=>{return y(d.height)})
       .attr("fill","gray");
 }).catch((error)=>{console.log(error)})
 
