@@ -87,3 +87,11 @@ Groups are containers for structuring and grouping SVG graphical elements togeth
 They are represented with the tag `g`, and allow us to apply **transformations** (e.g. translation) to multiple elements which are laid inside it.
 Groups form the base for implementing the **D3 Margin convention**.
 
+
+Axes
+----
+Axes are also implemented as groups, and can be added in D3 using **axis generators**.
+Possible axes that can be added are `d3.axisRight`, `d3.axisLeft`, `d3.axisTop` and `d3.axisBottom`. 
+Attributes of the axis ticks can also be customized, such as size (`.tickSize`, `.tickSizeInner`,  `.tickSizeOuter`); the number of ticks (`.ticks(n)`); the text formatting ( `.tickFormat(funct)`).
+Explicit values, contained in an array, can also be forced, using `.tickValues([...])`.
+
