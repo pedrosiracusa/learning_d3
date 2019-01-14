@@ -4,13 +4,16 @@ Axis Labels
 */
 
 /* Using the D3 margin convention */
-var margin = { top:60, right:10 , bottom:120, left:60 }
+var margin = { top:60, right:10 , bottom:40, left:60 }
 var width = 400 - margin.left - margin.right;
 var height = 400 - margin.top - margin.bottom;
 
+// Declare a flag variable (use revenues data when true, profit data when false)
+var flag = true;
+
 
 /* Appending the SVG canvas to the chart area*/
-var svg = d3.select("#chart-area").append("svg")
+var svg = d3.select("#chart-area1").append("svg")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom);
 
@@ -38,13 +41,6 @@ var y = d3.scaleLinear()
 
 /* Adding Title and Axes labels */
 
-// Title
-g.append("text")
-  .attr("text-anchor","middle")
-  .attr("x",width/2)
-  .attr("y",-10)
-  .attr("font-size","24px")
-  .text("Buildings of the World");
 
 // X label
 g.append("text")
@@ -52,24 +48,32 @@ g.append("text")
   .attr("x",width/2)
   .attr("y",height + margin.bottom)
   .attr("font-size","20px")
-  .text("Name");
+  .text("Month");
 
 // Y label
-g.append("text")
+var yLabel = g.append("text")
   .attr("text-anchor","middle")
   .attr("x",-height/2)
   .attr("y",-40)
   .attr("font-size","20px")
   .attr("transform", "rotate(-90)")
-  .text("Height");
+  .text("Revenue");
 
 
 /* Data join */
-d3.json("data/buildings.json").then((data)=>{
+d3.json("data/revenues.json").then((data)=>{
+
+  data.forEach((d)=>{
+    d.revenue = +d.revenue;
+    d.profit = +d.profit;
+  });
+
+  console.log(data);
 
   /* Intervals */
   d3.interval(()=>{
-    update(data)
+    update(data);
+    flag = !flag;
   },1000);
 
   // Run the viz for the first time
@@ -81,16 +85,17 @@ d3.json("data/buildings.json").then((data)=>{
 
 /* Update function */
 function update(data){
+  var value = flag ? "revenue" : "profit"; // use "revenue" if flag is true else use "profit"
 
+  x.domain(data.map((d)=>{return d.month}));
+  y.domain([0,d3.max(data,(d)=>{return d[value]})]);
 
-  x.domain(data.map((d)=>{return d.name}));
-  y.domain([0,d3.max(data,(data)=>{return data.height})]);
 
   /* Configuring axes */
   var xAxisCall = d3.axisBottom(x);
   xAxisGroup.call(xAxisCall);
   var yAxisCall = d3.axisLeft(y)
-    .ticks(3);
+    .tickFormat((d)=>{return "$"+d/1000+"k"});
   yAxisGroup.call(yAxisCall);
 
 
@@ -103,18 +108,21 @@ function update(data){
   rects.exit().remove();
 
   // UPDATE old elements present in the new data
-  rects.attr("x",(d)=>{return x(d.name)})
-    .attr("y", (d)=>{return y(d.height)})
+  rects.attr("x",(d)=>{return x(d.month)})
+    .attr("y", (d)=>{return y(d[value])})
     .attr("width", x.bandwidth)
-    .attr("height", (d)=>{return height - y(d.height)});
+    .attr("height", (d)=>{return height - y(d[value])});
 
   // ENTER new elements present in new data
   rects.enter()
       .append("rect")
-        .attr("x",(d)=>{return x(d.name)})
-        .attr("y", (d)=>{return y(d.height)})
+        .attr("x",(d)=>{return x(d.month)})
+        .attr("y", (d)=>{return y(d[value])})
         .attr("width", x.bandwidth)
-        .attr("height", (d)=>{return height - y(d.height)})
+        .attr("height", (d)=>{return height - y(d[value])})
         .attr("fill", "tomato");
+
+  // Update the Y label accordingly
+  yLabel.text( flag? "Revenue" : "Profit");
 }
 

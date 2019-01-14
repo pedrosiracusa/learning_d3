@@ -25,6 +25,10 @@ The basic syntax is `d3.interval(foo(){}, interval)`, where `foo` is a callback 
 ### Update function
 Allows a dynamic visualization, where part of the code is constantly executing in an interval function. Everything outside the update function should be executed only once.
 
+
+### Flag variables
+We can use a flag variable to keep track of the data we're looking at.
+
 The D3 Update Pattern
 ---------------------
 This is one of the hardest parts of D3.
