@@ -62,3 +62,24 @@ Adds a filter to the update function, and updates the visualization at the curre
 
 ### Sliders
 Jquery provides a [slide widget](http://api.jqueryui.com/slider/), which helps on the creation of this element.
+
+Line Graphs
+-----------
+Line graphs can be drawn using **path generators** (e.g. `d3.line()`).
+For instance, let's see a **line generator**
+```javascript
+// Line path generator
+var line = d3.line()
+  .x(function(d){ return x(d.year); })
+  .y(function(d){ return y(d.value); })
+
+// add line to chart
+g.append("path")
+  .attr("class", "line")
+  .attr("fill", "none")
+  .attr("stroke","grey")
+  .attr("stroke-width", "3px")
+  .attr("d", line(data));
+```
+First, we define a line generator which is given an array of data. For each element in the data array, we're telling the line generator how to interpret the data point X and Y coordinates, feeding the values into scales to get pixels.
+Then we call a line generator with an array of data. Each data point in this array is an object with both `year` and `value` fields, which the `line` function will interpret as a set of coordinates.
