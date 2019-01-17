@@ -59,3 +59,6 @@ Sets the interval loop back to t=0, also using a mouse click event listener.
 
 ### Filters
 Adds a filter to the update function, and updates the visualization at the current time.
+
+### Sliders
+Jquery provides a [slide widget](http://api.jqueryui.com/slider/), which helps on the creation of this element.
