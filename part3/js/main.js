@@ -10,7 +10,9 @@ var margin = {top:10, right:10, bottom:50, left:50};
 var width = 600 - margin.right - margin.left;
 var height = 400 - margin.top - margin.bottom;
 
-var year = 1800;
+var time = 0;
+var interval;
+var formattedData;
 
 
 /* Set the canvas */
@@ -119,29 +121,60 @@ var yearLabel = g.append("text")
   .attr("font-size",40)
   .attr("text-anchor","end")
   .attr("opacity", "0.6")
-  .text(year);
+  .text(time);
 
 
 
 /* Data Join */
 d3.json("data/data.json").then(function(data){
-  const dataFiltered = data.map( d => d.countries.filter(country => country.income && country.life_exp) );
+  formattedData = data.map( d => d.countries.filter(country => country.income && country.life_exp) );
 
   // Run for the first time
-  update(dataFiltered[0]);
+  update(formattedData[0]);
 
   // And then in an interval
   var ctr = 1;
   d3.interval(()=>{
-    update(dataFiltered[ctr]); 
-    ctr = (ctr+1)%(2015-1800);
-    year = ctr + 1800;
   }, 100);
 });
+
+$('#play-button')
+  .on("click",function(){
+    var button = $(this);
+    if (button.text()=="Play"){
+      button.text("Pause");
+      interval = setInterval(step,100);
+    }else{
+      button.text("Play");
+      clearInterval(interval);
+    }
+  })
+
+$('#reset-button')
+  .on("click",function(){
+      time = 0;
+      update(formattedData[0]);
+  })
+
+$('#continent-select')
+  .on("change",()=>{update(formattedData[time]);})
+
+function step(){
+    time = (time<214) ? time+1 : 0
+    update(formattedData[time]); 
+}
 
 function update(data){
 
   var t = d3.transition().duration(100);
+
+  // Filtering continents
+  var continent = $("#continent-select").val();
+  var data = data.filter((d)=>{
+    if(continent == 'all'){return true;}
+    else{ return d.continent == continent;}
+  })
+
   var circles = g.selectAll("circle").data(data, d=>d.country);
 
   // EXIT  old elements
@@ -162,7 +195,7 @@ function update(data){
 
 
   // Updating the year label
-  yearLabel.text(year);
+  yearLabel.text(time+1800);
 
       
 

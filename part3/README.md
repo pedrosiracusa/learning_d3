@@ -44,4 +44,18 @@ vis.selectAll('rect')
   .on('mouseout', tip.hide)
 ```
 
-We use the `on()` method for specifying event listeners
+We use the `on()` method for specifying **event listeners**.
+
+Interactive Elements
+--------------------
+We can add interactive elements to our chart, to control the dynamics of the visualization. 
+Some possible interactive elements are:
+
+### Play/Pause button
+Starts and stops the interval loop using a mouse click event listener.
+
+### Reset button
+Sets the interval loop back to t=0, also using a mouse click event listener.
+
+### Filters
+Adds a filter to the update function, and updates the visualization at the current time.
